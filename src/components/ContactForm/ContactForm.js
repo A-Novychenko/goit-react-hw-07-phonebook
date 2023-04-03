@@ -10,32 +10,32 @@ import {
   ErrorTel,
 } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 const INITIAL_STATE = {
   name: '',
-  number: '+38',
+  phone: '+38',
 };
 
 const Schema = Yup.object().shape({
   name: Yup.string().max(20, 'Max: 20 symbols').required(),
-  number: Yup.string()
+  phone: Yup.string()
     .phone('UK', 'Please enter a valid phone number in the format for UKRAINE')
     .required('A phone number is required'),
 });
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleForm = (values, { resetForm }) => {
-    const { name, number } = values;
+    const { name, phone } = values;
 
     if (contacts.length) {
       const isInConntacts =
         contacts.find(contact => contact.name === name) ||
-        contacts.find(contact => contact.number === number);
+        contacts.find(contact => contact.phone === phone);
 
       if (isInConntacts) {
         alert(`${name} is already in contacts.`);
@@ -68,10 +68,10 @@ export const ContactForm = () => {
           Number
           <Input
             type="tel"
-            name="number"
+            name="phone"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           />
-          <ErrorMessage name="number" component={ErrorTel} />
+          <ErrorMessage name="phone" component={ErrorTel} />
         </Label>
         <Add type="submit">Add contact</Add>
       </FormWrap>
