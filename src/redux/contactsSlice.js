@@ -6,6 +6,7 @@ const hendlePending = state => {
 };
 const hendleRejected = (state, { payload }) => {
   state.isLoading = false;
+  console.log('payload', payload);
   state.error = payload;
 };
 
