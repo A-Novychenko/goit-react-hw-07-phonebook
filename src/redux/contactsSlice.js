@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getContacts, addContact, removeContact } from './operations';
+import { fetchContacts, addContact, deleteContact } from './operations';
 
-const hendlePending = () => {};
-const hendleRejected = () => {};
+const hendlePending = state => {
+  state.isLoading = true;
+};
+const hendleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -13,23 +18,29 @@ const contactsSlice = createSlice({
   },
 
   extraReducers: {
-    [getContacts.pending]: hendlePending,
+    [fetchContacts.pending]: hendlePending,
     [addContact.pending]: hendlePending,
-    [removeContact.pending]: hendlePending,
+    [deleteContact.pending]: hendlePending,
 
-    [getContacts.rejected]: hendleRejected,
+    [fetchContacts.rejected]: hendleRejected,
     [addContact.rejected]: hendleRejected,
-    [removeContact.rejected]: hendleRejected,
+    [deleteContact.rejected]: hendleRejected,
 
-    [getContacts.fulfilled]: (state, { payload }) => {
+    [fetchContacts.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = null;
       state.items = payload;
     },
 
     [addContact.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = null;
       state.items.push(payload);
     },
 
-    [removeContact.fulfilled]: (state, { payload }) => {
+    [deleteContact.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = null;
       state.items.splice(
         state.items.findIndex(contact => contact.id === payload.id),
         1

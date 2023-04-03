@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Name, Inner, Remove } from './Contact.styled';
-import { removeContact } from 'redux/operations';
+import { deleteContact } from 'redux/operations';
 
 export const Contact = ({ name, phone, id }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export const Contact = ({ name, phone, id }) => {
       <Name>{`${name}: `}</Name>
       <Inner>
         <span>{phone}</span>
-        <Remove type="button" onClick={() => dispatch(removeContact(id))}>
+        <Remove type="button" onClick={() => dispatch(deleteContact(id))}>
           X
         </Remove>
       </Inner>
